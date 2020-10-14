@@ -1,0 +1,17 @@
+{
+    "name": "lovefield/phalcon-sample",
+    "description": "",
+    "license": "MIT",
+    "require": {
+      "php": "^7.4",
+      "duncan3dc/blade": "^4.2",
+      "phalcon/devtools": "v4.0.3",
+      "phalcon/cphalcon": "4.0.6",
+      "josegonzalez/dotenv": "3.2.0",
+      "respect/validation": "^1.1",
+      "jenssegers/agent": "^2.6",
+      "guzzlehttp/guzzle": "^7.0",
+      "ext-json": "*",
+      "ext-gd": "*"
+    }
+  }
