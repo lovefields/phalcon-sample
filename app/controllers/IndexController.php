@@ -3,13 +3,15 @@ namespace Controllers;
 
 use Controllers\Core\BaseController;
 
-class IndexController extends ControllerBase
+/**
+ * @RoutePrefix('/')
+ */
+class IndexController extends BaseController
 {
-
+    /**
+     * @Get('/')
+     */
     public function indexAction()
     {
-
     }
-
 }
-
