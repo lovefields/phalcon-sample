@@ -4,11 +4,12 @@ namespace App\Config;
 
 use josegonzalez\Dotenv\Loader as EnvLoader;
 use Phalcon\Di\FactoryDefault;
+use Phalcon\Http\ResponseInterface;
+use Phalcon\Mvc\Application;
 use Phalcon\Http\Response;
 use Phalcon\Loader;
 use Phalcon\Escaper;
 use Phalcon\Flash\Direct as Flash;
-use Phalcon\Mvc\Application;
 use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
 use Phalcon\Mvc\View;
 use Phalcon\Session\Adapter\Stream as SessionAdapter;
@@ -37,24 +38,30 @@ class Bootstrap
 
     public function run(): void
     {
+        $URI = $_SERVER['REQUEST_URI'];
+
         self::assignLoader();
         self::assignEnv();
         self::assignService();
         self::assignRouter();
 
+
         try {
-            echo (new Application(self::$di))->handle($_SERVER['REQUEST_URI'])->getContent();
-        } catch (\Exception $e) {
-//            $router = self::$di->getRouter();
-            if (!IS_DEBUG) {
+            $app = (new Application(self::$di))->handle($URI);
+            $app->send();
+        } catch (\Throwable $e) {
+            $router = self::$di->get("response");
+
+            if (IS_DEBUG == true) {
                 error_reporting(E_ALL);
-                echo $e->getMessage() . '<br>';
-                echo '<pre>' . $e->getTraceAsString() . '</pre>';
+                throw new \Exception($e->getMessage());
             } else {
                 ini_set('display_errors', 0);
                 error_reporting(0);
-//                $responce = new Response();
-//                $responce->redirect("/error", false)->send();
+
+                if($URI != "/error"){
+                    $router->redirect('/error')->send();
+                }
             }
         }
     }
@@ -165,7 +172,7 @@ class Bootstrap
 
             $router->notFound(['namespace' => 'Controllers', 'controller' => 'error', 'action' => 'notFound']);
             $router->removeExtraSlashes(true);
-            //$router->setUriSource(RouterAnnotations::URI_SOURCE_SERVER_REQUEST_URI);
+            // $router->setUriSource(RouterAnnotations::URI_SOURCE_SERVER_REQUEST_URI);
 
             return $router;
         };
