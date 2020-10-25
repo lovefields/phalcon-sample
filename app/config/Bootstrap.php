@@ -27,7 +27,7 @@ class Bootstrap
         self::$di = new FactoryDefault();
     }
 
-    public static function of(): self
+    public static function init(): self
     {
         if (empty(self::$bootstrap)) {
             self::$bootstrap = new Bootstrap();
@@ -71,7 +71,6 @@ class Bootstrap
         (new EnvLoader(BASE_PATH . '/.env'))->parse()->toEnv(true);
 
         define('BASE_URI', $_ENV['BASE_URI']);
-        define('IMG_URL', $_ENV['IMG_URL']);
         define('IS_DEBUG', $_ENV['IS_DEBUG'] ?: false);
     }
 
@@ -158,21 +157,10 @@ class Bootstrap
         self::$di['router'] = function() {
             $router = new RouterAnnotations(false);
 
-            $router->addResource('Controllers\Index', '')
-                ->addResource('Controllers\error', '/error')
-                ->addResource('Controllers\Articles', '/articles')
-                ->addResource('Controllers\Amp', '/amp')
-                ->addResource('Controllers\Category', '/category')
-                ->addResource('Controllers\Archives', '/archive')
-                ->addResource('Controllers\Output', '/output')
-                ->addResource('Controllers\Auth', '/auth')
-                ->addResource('Controllers\Members', '/members')
-                ->addResource('Controllers\MyService', '/my-service')
-            ;
+            $router->addResource('Controllers\Index', '');
 
             $router->notFound(['namespace' => 'Controllers', 'controller' => 'error', 'action' => 'notFound']);
             $router->removeExtraSlashes(true);
-            // $router->setUriSource(RouterAnnotations::URI_SOURCE_SERVER_REQUEST_URI);
 
             return $router;
         };

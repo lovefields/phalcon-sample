@@ -13,6 +13,6 @@ class IndexController extends BaseController
      */
     public function indexAction()
     {
-        $this->test();
+        $this->blade('/main/index');
     }
 }
