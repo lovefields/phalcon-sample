@@ -79,18 +79,17 @@ class Bootstrap
         $loader = new Loader();
 
         $loader->registerDirs([
-            APP_PATH . '/core/',
             APP_PATH . '/controllers/',
             APP_PATH . '/services/',
+            APP_PATH . '/helpers/',
             APP_PATH . '/models/',
             APP_PATH . '/library/',
         ])->registerNamespaces([
-            'Core' => APP_PATH . '/core/',
             'Controllers' => APP_PATH . '/controllers/',
-            'Infrastructure' => APP_PATH . '/infrastructure/',
+            'Controllers\Core' => APP_PATH . '/controllers/core/',
+            'Controllers\Core\Traits' => APP_PATH . '/controllers/core/traits/',
             'Services' => APP_PATH . '/services/',
-            'Models' => APP_PATH . '/models/',
-            'Repositories' => APP_PATH . '/repositories/',
+            'Services\Core' => APP_PATH . '/services/core/',
             'Library' => APP_PATH . '/library/',
             'Helpers' => APP_PATH . '/helpers/',
         ])->registerFiles([
